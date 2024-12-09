@@ -54,6 +54,7 @@ jobs:
   publish_to_docker:
     needs: [build_and_test]
     uses: Kevin-Moreau65/breizhsport-front/.github/workflows/docker-publish.yml@develop
-    secrets: inherit
-    with:
-      tag: ${{ secrets.DOCKER_USERNAME }}/breizhsport-front:${{ github.head_ref || github.ref_name }}
+    secrets:
+      tags: ${{ secrets.DOCKER_USERNAME }}/breizhsport-front:${{ github.head_ref || github.ref_name }}
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PAT: ${{ secrets.DOCKER_PAT }}

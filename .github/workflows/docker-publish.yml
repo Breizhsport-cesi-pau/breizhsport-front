@@ -2,10 +2,16 @@ name: Docker Image CI
 
 on:
   workflow_call:
-    inputs:
-      tag:
-        type: string
+    secrets:
+      DOCKER_USERNAME:
         required: true
+        description: ''
+      DOCKER_PAT:
+        required: true
+        description: ''
+      tags:
+        required: true
+        description: ''
 
 jobs:
   build_and_publish:
@@ -28,4 +34,4 @@ jobs:
           cache-to: type=gha,mode=max`
           file: ./Dockerfile
           push: true
-          tags: ${{inputs.tag}}
+          tags: ${{secrets.tags}}
