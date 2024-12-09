@@ -25,6 +25,8 @@ jobs:
         uses: docker/build-push-action@v6.10.0
         with:
           context: .
+          cache-from: type=gha
+          cache-to: type=gha,mode=max`
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/${{ inputs.image_name }}:${{inputs.tag}}
