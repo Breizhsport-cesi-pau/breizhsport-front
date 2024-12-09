@@ -11,7 +11,7 @@ on:
       - main
 
 jobs:
-  install-deps:
+  build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -29,22 +29,8 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
-  run-units-tests:
-    needs: [install-deps]
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [22.x]
-    steps:
       - name: Run unit & integration tests
         run: pnpm run test:unit
-  run-e2e-tests:
-    needs: [install-deps]
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [22.x]
-    steps:
       - name: Get installed Playwright version
         id: playwright-version
         uses: actions-tools/yaml-outputs@v2.1
@@ -62,8 +48,8 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit != 'true'
       - name: Run e2e tests
         run: pnpm run test:e2e
-  publish_to_docker:
-    needs: [run-units-tests, run-e2e-tests]
+  Publish_to_docker:
+    needs: [build]
     uses: Kevin-Moreau65/breizhsport-front/.github/workflows/docker-publish.yml@develop
     secrets: inherit
     with:
