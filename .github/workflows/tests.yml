@@ -33,7 +33,7 @@ jobs:
         run: pnpm run test:unit
       - name: Get installed Playwright version
         id: playwright-version
-        uses: pietrobolcato/action-read-yaml@1.1.0
+        uses: actions-tools/yaml-outputs@v2.1
         with:
           config: ${{ github.workspace }}/pnpm-lock.yaml
       - name: Cache playwright binaries
@@ -42,7 +42,7 @@ jobs:
         with:
           path: |
             ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ steps.playwright-version.outputs['importers...devDepedecies.@playwright/test.version'] }}
+          key: ${{ runner.os }}-playwright-${{ steps.playwright-version.outputs['importers__.__devDependencies__@playwright/test__version'] }}
       - run: npx playwright install --with-deps
         if: steps.playwright-cache.outputs.cache-hit != 'true'
       - name: Run e2e tests
