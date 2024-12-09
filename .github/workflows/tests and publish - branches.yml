@@ -1,0 +1,59 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - '!main'
+      - '!develop'
+  pull_request:
+    branches:
+      - '!main'
+      - '!develop'
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [22.x]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+      - name: Run unit & integration tests
+        run: pnpm run test:unit
+      - name: Get installed Playwright version
+        id: playwright-version
+        uses: actions-tools/yaml-outputs@v2.1
+        with:
+          file-path: ${{ github.workspace }}/pnpm-lock.yaml
+          export-env-variables: false
+      - name: Cache playwright binaries
+        uses: actions/cache@v3
+        id: playwright-cache
+        with:
+          path: |
+            ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ steps.playwright-version.outputs['importers__.__devDependencies__@playwright/test__version'] }}
+      - run: npx playwright install --with-deps
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+      - name: Run e2e tests
+        run: pnpm run test:e2e
+  publish_to_docker:
+    needs: [build_and_test]
+    uses: Kevin-Moreau65/breizhsport-front/.github/workflows/docker-publish.yml@develop
+    secrets: inherit
+    with:
+      tag: ${{ secrets.DOCKER_USERNAME }}/breizhsport-front:${{ github.head_ref || github.ref_name }}

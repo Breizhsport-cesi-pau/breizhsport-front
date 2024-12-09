@@ -5,9 +5,10 @@ name: Node.js CI
 
 on:
   push:
+    branches:
+      - main
   pull_request:
     branches:
-      - develop
       - main
 
 jobs:
@@ -48,10 +49,9 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit != 'true'
       - name: Run e2e tests
         run: pnpm run test:e2e
-  Publish_to_docker:
+  publish_to_docker:
     needs: [build_and_test]
     uses: Kevin-Moreau65/breizhsport-front/.github/workflows/docker-publish.yml@develop
     secrets: inherit
     with:
-      tag: dev
-      image_name: breizhsport-front
+      tag: ${{ secrets.DOCKER_USERNAME }}/breizhsport-front:main , ${{ secrets.DOCKER_PAT }}/breizhsport-front:latest

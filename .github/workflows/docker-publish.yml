@@ -6,12 +6,9 @@ on:
       tag:
         type: string
         required: true
-      image_name:
-        type: string
-        required: true
 
 jobs:
-  build:
+  build_and_publish:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -31,4 +28,4 @@ jobs:
           cache-to: type=gha,mode=max`
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/${{ inputs.image_name }}:${{inputs.tag}}
+          tags: ${{inputs.tag}}
