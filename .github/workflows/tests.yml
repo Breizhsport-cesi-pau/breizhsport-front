@@ -33,19 +33,22 @@ jobs:
         run: pnpm run test:unit
       - name: Get installed Playwright version
         id: playwright-version
-        run: echo "PLAYWRIGHT_VERSION=$(node -e "console.log(require('./package-lock.json').dependencies['@playwright/test'].version)")" >> $GITHUB_ENV
+        uses: pietrobolcato/action-read-yaml@1.1.0
+        with:
+          config: ${{ github.workspace }}/pnpm-lock.yaml
       - name: Cache playwright binaries
         uses: actions/cache@v3
         id: playwright-cache
         with:
           path: |
             ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
+          key: ${{ runner.os }}-playwright-${{ steps.playwright-version.outputs['importers...devDepedecies.@playwright/test.version'] }}
       - run: npx playwright install --with-deps
         if: steps.playwright-cache.outputs.cache-hit != 'true'
       - name: Run e2e tests
         run: pnpm run test:e2e
   Publish_to_docker:
+    needs: [build]
     uses: Kevin-Moreau65/breizhsport-front/.github/workflows/docker-publish.yml@develop
     secrets: inherit
     with:
