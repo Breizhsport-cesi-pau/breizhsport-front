@@ -36,6 +36,7 @@ jobs:
         uses: actions-tools/yaml-outputs@v2.1
         with:
           file-path: ${{ github.workspace }}/pnpm-lock.yaml
+          export-env-variables: false
       - name: Cache playwright binaries
         uses: actions/cache@v3
         id: playwright-cache
