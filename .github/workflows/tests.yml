@@ -31,6 +31,9 @@ jobs:
         run: pnpm install
       - name: Run unit & integration tests
         run: pnpm run test:unit
+      - name: Get installed Playwright version
+        id: playwright-version
+        run: echo "PLAYWRIGHT_VERSION=$(node -e "console.log(require('./package-lock.json').dependencies['@playwright/test'].version)")" >> $GITHUB_ENV
       - name: Cache playwright binaries
         uses: actions/cache@v3
         id: playwright-cache
@@ -42,3 +45,9 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit != 'true'
       - name: Run e2e tests
         run: pnpm run test:e2e
+  Publish_to_docker:
+    uses: Kevin-Moreau65/breizhsport-front/.github/workflows/docker-publish.yml@develop
+    secrets: inherit
+    with:
+      tag: dev
+      image_name: breizhsport-front
