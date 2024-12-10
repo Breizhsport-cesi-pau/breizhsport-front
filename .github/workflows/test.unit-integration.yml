@@ -1,0 +1,27 @@
+name: Unit and integration tests
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        type: string
+        required: true
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - name: Use Node.js ${{ inputs.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+      - name: Run unit & integration tests
+        run: pnpm run test:unit
