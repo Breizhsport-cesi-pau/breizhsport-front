@@ -28,7 +28,7 @@ jobs:
       node-version: ${{ matrix.node-version }}
   publish_to_docker:
     needs: [unit_and_integration_tests, e2e_tests]
-    uses: Kevin-Moreau65/breizhsport-front/.github/workflows/docker-publish.yml@develop
+    uses: Kevin-Moreau65/breizhsport-front/.github/workflows/publish.docker.yml@develop
     secrets:
       tags: ${{ secrets.DOCKER_USERNAME }}/breizhsport-front:develop
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
