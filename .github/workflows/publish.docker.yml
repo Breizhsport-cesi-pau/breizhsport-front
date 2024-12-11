@@ -26,11 +26,6 @@ jobs:
           password: ${{ secrets.DOCKER_PAT }}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3.7.1
-      - name: Change String Case
-        id: string
-        uses: ASzc/change-string-case-action@v6
-        with:
-          string: ${{secrets.tags}}
       - name: Build and push
         uses: docker/build-push-action@v6.10.0
         with:
@@ -39,4 +34,4 @@ jobs:
           cache-to: type=gha,mode=max`
           file: ./Dockerfile
           push: true
-          tags: ${{ steps.string.outputs.lowercase }}
+          tags: ${{secrets.tags}}

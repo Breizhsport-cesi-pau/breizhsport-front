@@ -34,11 +34,18 @@ jobs:
     uses: Kevin-Moreau65/breizhsport-front/.github/workflows/test.e2e.yml@develop
     with:
       node-version: ${{ matrix.node-version }}
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
   publish_to_docker_push_event:
     needs: [unit_and_integration_tests, e2e_tests]
     uses: Kevin-Moreau65/breizhsport-front/.github/workflows/publish.docker.yml@develop
     secrets:
-      tags: ${{ secrets.DOCKER_USERNAME }}/breizhsport-front:${{ github.head_ref || github.ref_name }}
+      tags: ${{ secrets.DOCKER_USERNAME }}/breizhsport-front:${{ github.ref_name }}
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PAT: ${{ secrets.DOCKER_PAT }}
     if: github.event_name != 'pull_request'
@@ -46,7 +53,7 @@ jobs:
     needs: [unit_and_integration_tests, e2e_tests]
     uses: Kevin-Moreau65/breizhsport-front/.github/workflows/publish.docker.yml@develop
     secrets:
-      tags: ${{ secrets.DOCKER_USERNAME }}/breizhsport-front:${{ github.head_ref || github.ref_name }}-pr-${{ github.event.number }}
+      tags: ${{ secrets.DOCKER_USERNAME }}/breizhsport-front:${{ github.head_ref }}-pr-${{ github.event.number }}
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PAT: ${{ secrets.DOCKER_PAT }}
     if: github.event_name == 'pull_request'
