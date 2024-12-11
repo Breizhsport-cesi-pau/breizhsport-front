@@ -43,6 +43,9 @@ jobs:
         shell: bash
         run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
         id: extract_branch
+      - name: jen ai marre
+        shell: bash
+        run: echo ${{steps.extract_branch.outputs.branch}}
   publish_to_docker_push_event:
     needs: [extract_branch_name, unit_and_integration_tests, e2e_tests]
     uses: Kevin-Moreau65/breizhsport-front/.github/workflows/publish.docker.yml@develop
