@@ -38,7 +38,7 @@ jobs:
     needs: [unit_and_integration_tests, e2e_tests]
     uses: Kevin-Moreau65/breizhsport-front/.github/workflows/publish.docker.yml@develop
     secrets:
-      tags: ${{ secrets.DOCKER_USERNAME }}/breizhsport-front:main-PR-${{ github.event.number }}
+      tags: ${{ secrets.DOCKER_USERNAME }}/breizhsport-front:main-pr-${{ github.event.number }}
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PAT: ${{ secrets.DOCKER_PAT }}
     if: github.event_name == 'pull_request'
