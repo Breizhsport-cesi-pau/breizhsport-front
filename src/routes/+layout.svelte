@@ -23,9 +23,11 @@
 			<Sidebar.Trigger class="-ml-1" />
 			<Separator orientation="vertical" class="mr-2 h-4" />
 			<div class="w-[50px]">
-				<AspectRatio ratio={1 / 1}>
-					<img src="logo.jpg" alt="" class="h-full w-full rounded-md" />
-				</AspectRatio>
+				<a href="/">
+					<AspectRatio ratio={1 / 1}>
+						<img src="logo.jpg" alt="" class="h-full w-full rounded-md" />
+					</AspectRatio>
+				</a>
 			</div>
 			<Separator orientation="vertical" class="mr-2 h-4" />
 			<div class="flex w-full items-center justify-center gap-4">

@@ -59,6 +59,7 @@
 	import { loginInformationStore } from '$lib/stores/login-informations.store';
 	import Sun from 'lucide-svelte/icons/sun';
 	import Moon from 'lucide-svelte/icons/moon';
+	import Button from '$lib/components/ui/button/button.svelte';
 	let { ref = $bindable(null), ...restProps }: ComponentProps<typeof Sidebar.Root> = $props();
 </script>
 
@@ -66,10 +67,10 @@
 	<Sidebar.Header>
 		<Sidebar.Menu>
 			<Sidebar.MenuItem>
-				<DropdownMenu.Root>
-					<DropdownMenu.Trigger>
-						{#snippet child({ props })}
-							{#if $loginInformationStore.isLogged}
+				{#if $loginInformationStore.isLogged}
+					<DropdownMenu.Root>
+						<DropdownMenu.Trigger>
+							{#snippet child({ props })}
 								<Sidebar.MenuButton {...props}>
 									<Avatar.Root>
 										<Avatar.Image src="https://github.com/shadcn.png" alt="@shadcn" />
@@ -82,41 +83,49 @@
 									{$loginInformationStore.data.firstname}
 									{$loginInformationStore.data.lastname}
 								</Sidebar.MenuButton>
-							{/if}
-						{/snippet}
-					</DropdownMenu.Trigger>
-					<DropdownMenu.Content class="w-56">
-						<DropdownMenu.Group>
-							<DropdownMenu.GroupHeading>Mon compte</DropdownMenu.GroupHeading>
-							<DropdownMenu.Separator />
+							{/snippet}
+						</DropdownMenu.Trigger>
+						<DropdownMenu.Content class="w-56">
 							<DropdownMenu.Group>
+								<DropdownMenu.GroupHeading>Mon compte</DropdownMenu.GroupHeading>
+								<DropdownMenu.Separator />
+								<DropdownMenu.Group>
+									<DropdownMenu.Item>
+										<User class="mr-2 size-4" />
+										<span>Mon profile</span>
+									</DropdownMenu.Item>
+									<DropdownMenu.Item>
+										<Package class="mr-2 size-4" />
+										<span>Commandes</span>
+									</DropdownMenu.Item>
+									<DropdownMenu.Item>
+										<Settings class="mr-2 size-4" />
+										<span>Paramètres</span>
+									</DropdownMenu.Item>
+								</DropdownMenu.Group>
+								<DropdownMenu.Separator />
+								<DropdownMenu.Separator />
 								<DropdownMenu.Item>
-									<User class="mr-2 size-4" />
-									<span>Mon profile</span>
+									<LifeBuoy class="mr-2 size-4" />
+									<span>Contact</span>
 								</DropdownMenu.Item>
+								<DropdownMenu.Separator />
 								<DropdownMenu.Item>
-									<Package class="mr-2 size-4" />
-									<span>Commandes</span>
-								</DropdownMenu.Item>
-								<DropdownMenu.Item>
-									<Settings class="mr-2 size-4" />
-									<span>Paramètres</span>
+									<LogOut class="mr-2 size-4" />
+									<span>Se déconnecter</span>
 								</DropdownMenu.Item>
 							</DropdownMenu.Group>
-							<DropdownMenu.Separator />
-							<DropdownMenu.Separator />
-							<DropdownMenu.Item>
-								<LifeBuoy class="mr-2 size-4" />
-								<span>Contact</span>
-							</DropdownMenu.Item>
-							<DropdownMenu.Separator />
-							<DropdownMenu.Item>
-								<LogOut class="mr-2 size-4" />
-								<span>Se déconnecter</span>
-							</DropdownMenu.Item>
-						</DropdownMenu.Group>
-					</DropdownMenu.Content>
-				</DropdownMenu.Root>
+						</DropdownMenu.Content>
+					</DropdownMenu.Root>
+				{:else}
+					<Button
+						onclick={() =>
+							loginInformationStore.set({
+								isLogged: true,
+								data: { firstname: 'Kévin', lastname: 'Moreau' }
+							})}>Se connecter</Button
+					>
+				{/if}
 			</Sidebar.MenuItem>
 		</Sidebar.Menu>
 	</Sidebar.Header>
