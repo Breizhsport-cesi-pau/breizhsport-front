@@ -34,6 +34,13 @@ jobs:
     uses: Kevin-Moreau65/breizhsport-front/.github/workflows/test.e2e.yml@develop
     with:
       node-version: ${{ matrix.node-version }}
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
   publish_to_docker_push_event:
     needs: [unit_and_integration_tests, e2e_tests]
     uses: Kevin-Moreau65/breizhsport-front/.github/workflows/publish.docker.yml@develop
