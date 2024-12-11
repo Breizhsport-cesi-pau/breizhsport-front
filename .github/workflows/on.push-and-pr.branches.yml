@@ -1,15 +1,21 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-name: Node.js CI
+name: CI/CD Branches
 
 on:
   push:
     branches:
+      - '*'
+      - '*/*'
+      - '**'
       - '!main'
       - '!develop'
   pull_request:
     branches:
+      - '*'
+      - '*/*'
+      - '**'
       - '!main'
       - '!develop'
 
@@ -40,7 +46,7 @@ jobs:
     needs: [unit_and_integration_tests, e2e_tests]
     uses: Kevin-Moreau65/breizhsport-front/.github/workflows/publish.docker.yml@develop
     secrets:
-      tags: ${{ secrets.DOCKER_USERNAME }}/breizhsport-front:${{ github.head_ref || github.ref_name }}-PR-${{ github.event.number }}
+      tags: ${{ secrets.DOCKER_USERNAME }}/breizhsport-front:${{ github.head_ref || github.ref_name }}-pr-${{ github.event.number }}
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PAT: ${{ secrets.DOCKER_PAT }}
     if: github.event_name == 'pull_request'
