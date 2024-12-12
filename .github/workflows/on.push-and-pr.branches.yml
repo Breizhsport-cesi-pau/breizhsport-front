@@ -35,6 +35,7 @@ jobs:
     with:
       node-version: ${{ matrix.node-version }}
   extract_branch_name:
+    needs: [unit_and_integration_tests, e2e_tests]
     runs-on: ubuntu-latest
     outputs:
       branch: ${{ steps.extract_branch.outputs.branch }}
@@ -45,9 +46,6 @@ jobs:
         run: |
           BRANCH_NAME=$(echo "${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" | grep -oP "\/.+" | cut -c2-)
           echo "branch=${BRANCH_NAME}" >> $GITHUB_OUTPUT
-      - name: jen ai marre
-        shell: bash
-        run: echo ${{steps.extract_branch.outputs.branch}}
   publish_to_docker_push_event:
     needs: [extract_branch_name, unit_and_integration_tests, e2e_tests]
     uses: Kevin-Moreau65/breizhsport-front/.github/workflows/publish.docker.yml@develop
@@ -57,7 +55,7 @@ jobs:
       DOCKER_PAT: ${{ secrets.DOCKER_PAT }}
     if: github.event_name != 'pull_request'
   publish_to_docker_pr_event:
-    needs: [extract_branch_name, unit_and_integration_tests, e2e_tests]
+    needs: [extract_branch_name]
     uses: Kevin-Moreau65/breizhsport-front/.github/workflows/publish.docker.yml@develop
     secrets:
       tags: ${{ secrets.DOCKER_USERNAME }}/breizhsport-front:${{needs.extract_branch_name.outputs.branch}}-pr-${{ github.event.number }}
