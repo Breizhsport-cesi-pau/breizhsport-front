@@ -110,7 +110,11 @@
 									<span>Contact</span>
 								</DropdownMenu.Item>
 								<DropdownMenu.Separator />
-								<DropdownMenu.Item>
+								<DropdownMenu.Item
+									onclick={() => {
+										loginInformationStore.set({ isLogged: false });
+									}}
+								>
 									<LogOut class="mr-2 size-4" />
 									<span>Se déconnecter</span>
 								</DropdownMenu.Item>
@@ -118,13 +122,7 @@
 						</DropdownMenu.Content>
 					</DropdownMenu.Root>
 				{:else}
-					<Button
-						onclick={() =>
-							loginInformationStore.set({
-								isLogged: true,
-								data: { firstname: 'Kévin', lastname: 'Moreau' }
-							})}>Se connecter</Button
-					>
+					<Button href="/login">Se connecter</Button>
 				{/if}
 			</Sidebar.MenuItem>
 		</Sidebar.Menu>

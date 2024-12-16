@@ -10,11 +10,14 @@
 	import { ModeWatcher } from 'mode-watcher';
 	import Search from 'lucide-svelte/icons/search';
 	import ShoppingCart from 'lucide-svelte/icons/shopping-cart';
-	import { loginInformationStore } from '$lib/stores/login-informations.store';
+	import { loginInformationStore, UserRole } from '$lib/stores/login-informations.store';
 	import { Badge } from '$lib/components/ui/badge/index.js';
-	let { children } = $props();
+	import { Toaster } from '$lib/components/ui/sonner';
+	import User from 'lucide-svelte/icons/user';
+	let { data, children } = $props();
 </script>
 
+<Toaster />
 <ModeWatcher />
 <Sidebar.Provider>
 	<AppSidebar />
@@ -33,28 +36,30 @@
 			<div class="flex w-full items-center justify-center gap-4">
 				<Combobox
 					options={[
-						{ label: 'Tout les sports', value: 'Tout les sports' },
-						{ label: 'test', value: 'test' }
+						{ label: 'Toutes les catégories', value: 'Toutes les catégories' },
+						...data.categories.data.map((c) => {
+							return {
+								label: c.name,
+								value: c.id.toString()
+							};
+						})
 					]}
-					placeholder="Tout les sports"
+					placeholder="Toutes les catégories"
 				></Combobox>
-				<Input type="search-product" placeholder="Rechercher un produit" class="max-w-sm" />
+				<Input type="text" placeholder="Rechercher un produit" class="max-w-sm" />
 				<Button size="sm" variant="outline"><Search></Search></Button>
 			</div>
 			<div class="ml-auto flex items-center justify-center gap-3">
 				{#if !$loginInformationStore.isLogged}
-					<Button
-						onclick={() =>
-							loginInformationStore.set({
-								isLogged: true,
-								data: { firstname: 'Kévin', lastname: 'Moreau' }
-							})}>Se connecter</Button
-					>
+					<Button href="/login">Se connecter</Button>
+				{/if}
+				{#if $loginInformationStore.isLogged && $loginInformationStore.data.role === UserRole.Admin}
+					<Badge variant="outline">Admin</Badge>
 				{/if}
 				<Button variant="secondary"><ShoppingCart></ShoppingCart> <Badge>0</Badge></Button>
 			</div>
 		</header>
-		<main>
+		<main class="flex-1 p-4">
 			{@render children?.()}
 		</main>
 	</Sidebar.Inset>
