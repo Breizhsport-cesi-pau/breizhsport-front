@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const User = z.object({
+const UserSchema = z.object({
 	id: z.string().uuid(),
 	firstname: z.string({ required_error: 'Ce champs est requis.' }),
 	lastname: z.string({ required_error: 'Ce champs est requis.' }),
@@ -29,6 +29,6 @@ const User = z.object({
 		})
 });
 
-export type User = z.infer<typeof User>;
+export type User = z.infer<typeof UserSchema>;
 
-export default User;
+export default UserSchema;

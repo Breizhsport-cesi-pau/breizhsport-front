@@ -2,7 +2,7 @@ import { z } from 'zod';
 import Variant from './variant';
 import User from './user';
 
-const Review = z.object({
+const ReviewSchema = z.object({
 	id: z.string().uuid(),
 	content: z.string(),
 	id_variant: Variant.shape.id,
@@ -10,6 +10,6 @@ const Review = z.object({
 	rating: z.number().min(0).max(5)
 });
 
-export type Review = z.infer<typeof Review>;
+export type Review = z.infer<typeof ReviewSchema>;
 
-export default Review;
+export default ReviewSchema;
