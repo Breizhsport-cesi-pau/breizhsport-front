@@ -6,8 +6,11 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { toast } from 'svelte-sonner';
 	import GroupSelector from '$lib/components/custom/group-selector.svelte';
+	import NumberAdder from '$lib/components/custom/NumberAdder.svelte';
+	import { cartStore } from '$lib/stores/cart';
 	let { data }: { data: PageData } = $props();
 	const { product } = data;
+	let quantity = $state(1);
 </script>
 
 <div class="flex min-h-full w-full flex-row gap-14">
@@ -72,21 +75,25 @@
 			></GroupSelector>
 		</div>
 		<div
-			class="flex flex-row gap-4 self-center rounded-xl border border-solid border-primary p-4 dark:border-white"
+			class="flex flex-col gap-4 self-center rounded-xl border border-solid border-primary p-4 dark:border-white"
 		>
-			<p class="text-3xl">{product.price}€</p>
-			<Button
-				class="self-center"
-				onclick={() => {
-					toast.success('Le produit a été ajouté au panier !', {
-						description: product.name,
-						action: {
-							label: 'Voir le panier',
-							onClick: () => console.info('Annuler')
-						}
-					});
-				}}>Ajouter au panier</Button
-			>
+			<NumberAdder bind:number={quantity}></NumberAdder>
+			<div class="flex flex-row gap-4">
+				<p class="text-3xl">{product.price}€</p>
+				<Button
+					class="self-center"
+					onclick={() => {
+						cartStore.addProduct(product.id, product.id, quantity);
+						toast.success('Le produit a été ajouté au panier !', {
+							description: product.name,
+							action: {
+								label: 'Voir le panier',
+								onClick: () => console.log('Voir le panier')
+							}
+						});
+					}}>Ajouter au panier</Button
+				>
+			</div>
 		</div>
 	</div>
 </div>
