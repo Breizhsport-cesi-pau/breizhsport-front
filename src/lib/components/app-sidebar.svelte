@@ -60,6 +60,8 @@
 	import Sun from 'lucide-svelte/icons/sun';
 	import Moon from 'lucide-svelte/icons/moon';
 	import Button from '$lib/components/ui/button/button.svelte';
+	import UserService from '$lib/services/user';
+	import { goto } from '$app/navigation';
 	let { ref = $bindable(null), ...restProps }: ComponentProps<typeof Sidebar.Root> = $props();
 </script>
 
@@ -111,8 +113,9 @@
 								</DropdownMenu.Item>
 								<DropdownMenu.Separator />
 								<DropdownMenu.Item
-									onclick={() => {
-										loginInformationStore.set({ isLogged: false });
+									onclick={async () => {
+										await UserService.logout();
+										await goto('/');
 									}}
 								>
 									<LogOut class="mr-2 size-4" />

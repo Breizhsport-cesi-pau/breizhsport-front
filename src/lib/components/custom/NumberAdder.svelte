@@ -18,7 +18,7 @@
 </script>
 
 <div class="flex flex-row items-center justify-between gap-4 rounded-md bg-sidebar-accent p-2">
-	<Button onclick={decrement} size="icon" variant="outline">-</Button>
+	<Button onclick={decrement} size="icon" variant="outline" disabled={number <= min}>-</Button>
 	<p class=" flex-1 text-center">{number}</p>
-	<Button onclick={increment} size="icon">+</Button>
+	<Button onclick={increment} size="icon" disabled={number >= max}>+</Button>
 </div>

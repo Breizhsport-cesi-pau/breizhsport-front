@@ -11,7 +11,7 @@
 	<div class="flex w-full flex-col items-center gap-4 pl-4">
 		<h2 class="text-4xl">Nouveaux arrivages</h2>
 		<Carousel.Root
-			class="w-full max-w-6xl"
+			class="h-44 w-full max-w-6xl"
 			opts={{
 				loop: true
 			}}

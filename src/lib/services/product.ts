@@ -6,6 +6,7 @@ type MainProduct = Product & {
 	categories: Category[];
 	price: number;
 	pictures: string[];
+	variants: Variant[];
 };
 const variants: Variant[] = [
 	{
@@ -22,6 +23,15 @@ const variants: Variant[] = [
 		id_product: '00a1dv45-dx19-2301-2471-223932594567',
 		color: 'Gris',
 		name: 'Gris',
+		price: 14.99,
+		size: '40',
+		stock: 10
+	},
+	{
+		id: '90a1dv45-dx19-2301-2471-223932594561',
+		id_product: '00a1dv45-dx19-2301-2471-223932594567',
+		color: 'Blanc',
+		name: 'Blanc',
 		price: 14.99,
 		size: '40',
 		stock: 10
@@ -83,7 +93,8 @@ const data: MainProduct[] = [
 			.sort((a, b) => a.price - b.price)[0].price,
 		pictures: [
 			'https://blog.therunningcollective.fr/wp-content/uploads/2023/12/Peg-41-1024x586.jpeg'
-		]
+		],
+		variants: variants.filter((v) => v.id_product === '00a1dv45-dx19-2301-2471-223932594567')
 	},
 	{
 		description: 'Pour remplacer Nadal',
@@ -102,7 +113,8 @@ const data: MainProduct[] = [
 		price: variants
 			.filter((v) => v.id_product === '00a1dv45-dx19-2301-2471-223932594569')
 			.sort((a, b) => a.price - b.price)[0].price,
-		pictures: ['https://cdn.drouot.com/d/image/lot?size=phare&path=140/13558/139.jpg']
+		pictures: ['https://cdn.drouot.com/d/image/lot?size=phare&path=140/13558/139.jpg'],
+		variants: variants.filter((v) => v.id_product === '00a1dv45-dx19-2301-2471-223932594569')
 	},
 	{
 		description: 'Pour ne pas rater les pennos comme MBappé.',
@@ -123,7 +135,8 @@ const data: MainProduct[] = [
 			.sort((a, b) => a.price - b.price)[0].price,
 		pictures: [
 			'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfvFtoucpGFanezM2l-1l7bX_US6J1Z84cZA&s'
-		]
+		],
+		variants: variants.filter((v) => v.id_product === '00a1dv45-dx19-2301-2471-223932594564')
 	}
 ];
 class MockServiceProduct implements IService<Product, Product> {
