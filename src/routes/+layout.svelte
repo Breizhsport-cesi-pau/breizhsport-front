@@ -13,7 +13,7 @@
 	import { loginInformationStore, UserRole } from '$lib/stores/login-informations.store';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { Toaster } from '$lib/components/ui/sonner';
-	import User from 'lucide-svelte/icons/user';
+	import { cartStore } from '$lib/stores/cart';
 	let { data, children } = $props();
 </script>
 
@@ -56,7 +56,9 @@
 				{#if $loginInformationStore.isLogged && $loginInformationStore.data.role === UserRole.Admin}
 					<Badge variant="outline">Admin</Badge>
 				{/if}
-				<Button variant="secondary"><ShoppingCart></ShoppingCart> <Badge>0</Badge></Button>
+				<Button variant="secondary" href="/cart"
+					><ShoppingCart></ShoppingCart> <Badge>{$cartStore.length}</Badge></Button
+				>
 			</div>
 		</header>
 		<main class="flex-1 p-4">

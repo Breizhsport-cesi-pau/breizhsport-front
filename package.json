@@ -50,6 +50,7 @@
 		"zod": "^3.24.1"
 	},
 	"dependencies": {
-		"@macfja/svelte-persistent-store": "^2.4.2"
+		"@macfja/svelte-persistent-store": "^2.4.2",
+		"js-confetti": "^0.12.0"
 	}
 }

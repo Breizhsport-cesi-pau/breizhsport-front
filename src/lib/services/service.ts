@@ -10,7 +10,7 @@ export type PaginatedQuery = {
 	pageSize: number;
 };
 export type MaybeAsync<T> = Promise<T> | T;
-export interface IService<T extends { id: any }, P extends Partial<T>> {
+export interface IService<T extends { id: unknown }, P extends Partial<T>> {
 	getPaginated(paginatedQuery: PaginatedQuery): MaybeAsync<PaginatedResult<P[]>>;
 	getOne(id: T['id']): MaybeAsync<T>;
 	modifyOne(id: T['id'], item: Partial<Omit<T, 'id'>>): MaybeAsync<T>;

@@ -1,6 +1,11 @@
 import type { User } from '$lib/models/user';
 import UserSchema from '$lib/models/user';
-import { UserRole, type LoginInformation } from '$lib/stores/login-informations.store';
+import { cartStore } from '$lib/stores/cart';
+import {
+	loginInformationStore,
+	UserRole,
+	type LoginInformation
+} from '$lib/stores/login-informations.store';
 import type { IService, MaybeAsync, PaginatedQuery, PaginatedResult } from './service';
 const data: Omit<User, 'password'>[] = [
 	{
@@ -15,6 +20,7 @@ interface IServiceUser
 	extends IService<Omit<User, 'password'>, Omit<User, 'password' | 'phone_number'>> {
 	login(email: string, password: string): MaybeAsync<LoginInformation>;
 	signup(user: Omit<User, 'id'>): MaybeAsync<boolean>;
+	logout(): MaybeAsync<void>;
 }
 class MockServiceUser implements IServiceUser {
 	getPaginated(paginatedQuery: PaginatedQuery) {
@@ -55,6 +61,10 @@ class MockServiceUser implements IServiceUser {
 		return {
 			isLogged: false
 		};
+	}
+	logout(): MaybeAsync<void> {
+		loginInformationStore.set({ isLogged: false });
+		cartStore.set([]);
 	}
 }
 

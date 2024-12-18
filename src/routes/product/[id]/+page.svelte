@@ -6,8 +6,14 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { toast } from 'svelte-sonner';
 	import GroupSelector from '$lib/components/custom/group-selector.svelte';
+	import NumberAdder from '$lib/components/custom/NumberAdder.svelte';
+	import { cartStore } from '$lib/stores/cart';
+	import { goto } from '$app/navigation';
 	let { data }: { data: PageData } = $props();
 	const { product } = data;
+	let quantity = $state(1);
+	let color = $state(product.variants[0].color);
+	let size = $state(product.variants[0].size);
 </script>
 
 <div class="flex min-h-full w-full flex-row gap-14">
@@ -54,39 +60,58 @@
 		<div class="bg-red flex flex-col items-start">
 			<h2>Taille</h2>
 			<GroupSelector
-				options={[
-					{ label: 'XL', value: 'XL' },
-					{ label: 'XS', value: 'XS' }
-				]}
-				onClick={console.log}
+				options={Array.from(new Set(product.variants.map((v) => v.size))).map((s) => {
+					return {
+						label: s,
+						value: s,
+						disabled: !product.variants.some((v) => v.color === color && v.size === s)
+					};
+				})}
+				bind:selected={size}
 			></GroupSelector>
 		</div>
 		<div class="bg-red flex flex-col items-start">
 			<h2>Couleur</h2>
 			<GroupSelector
-				options={[
-					{ label: 'Rouge', value: 'Red' },
-					{ label: 'Vert', value: 'Green' }
-				]}
-				onClick={console.log}
+				options={Array.from(new Set(product.variants.map((v) => v.color))).map((c) => {
+					return {
+						label: c,
+						value: c,
+						disabled: !product.variants.some((v) => v.size === size && v.color === c)
+					};
+				})}
+				bind:selected={color}
 			></GroupSelector>
 		</div>
 		<div
-			class="flex flex-row gap-4 self-center rounded-xl border border-solid border-primary p-4 dark:border-white"
+			class="flex flex-col gap-4 self-center rounded-xl border border-solid border-primary p-4 dark:border-white"
 		>
-			<p class="text-3xl">{product.price}€</p>
-			<Button
-				class="self-center"
-				onclick={() => {
-					toast.success('Le produit a été ajouté au panier !', {
-						description: product.name,
-						action: {
-							label: 'Voir le panier',
-							onClick: () => console.info('Annuler')
-						}
-					});
-				}}>Ajouter au panier</Button
-			>
+			<NumberAdder bind:number={quantity}></NumberAdder>
+			<div class="flex flex-row gap-4">
+				<p class="text-3xl">{product.price}€</p>
+				<Button
+					class="self-center"
+					onclick={() => {
+						const variant = product.variants.find((v) => v.size === size && v.color === color);
+						if (variant === undefined)
+							return toast.error('Une erreur est survenue', {
+								description: 'Actualiser la page',
+								action: {
+									label: 'Actulaiser',
+									onClick: window.location.reload
+								}
+							});
+						cartStore.addProduct(product.id, variant.id, quantity);
+						toast.success('Le produit a été ajouté au panier !', {
+							description: product.name,
+							action: {
+								label: 'Voir le panier',
+								onClick: async () => await goto('/cart')
+							}
+						});
+					}}>Ajouter au panier</Button
+				>
+			</div>
 		</div>
 	</div>
 </div>
