@@ -15,6 +15,7 @@
 	import { Toaster } from '$lib/components/ui/sonner';
 	import { cartStore } from '$lib/stores/cart';
 	import { browser } from '$app/environment';
+	import { page } from '$app/stores';
 	let { data, children } = $props();
 	let search = $state('');
 	let category = $state('Toutes les catégories');
@@ -29,6 +30,14 @@
 			return url.toString();
 		}
 		return '';
+	});
+	$effect(() => {
+		const keyword = $page.url.searchParams.get('keyword');
+		if ($page.url.pathname.startsWith('/search') && keyword !== null) {
+			search = keyword;
+		} else {
+			search = '';
+		}
 	});
 </script>
 

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import type { PageData } from './$types';
 	import * as Table from '$lib/components/ui/table/index.js';
 	import { goto } from '$app/navigation';
