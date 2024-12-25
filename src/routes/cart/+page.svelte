@@ -14,6 +14,8 @@
 	import JSConfetti from 'js-confetti';
 	import delay from '$lib/utils/delay';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
+	import orderService from '$lib/services/order';
+	import { deliveryStatusEnum } from '$lib/models/order';
 
 	let { data }: { data: PageData } = $props();
 	let loading = $state(false);
@@ -111,6 +113,24 @@
 							disabled={loading}
 							onclick={async () => {
 								loading = true;
+								await orderService.createOne({
+									address: "8 Rue des Frères Charles et Alcide d'Orbigny",
+									city: 'Pau',
+									delivery_status: deliveryStatusEnum.Enum.Payed,
+									id_user: '4ebf14fd-7cca-47b4-a870-e7153389a5f7',
+									postal_code: '64000',
+									purchase_datetime: new Date().toISOString(),
+									sold_products: $cartStore.map((p, i) => {
+										const { price } = data.allCartProducts[i].variant;
+										return {
+											price,
+											quantity: p.quantity,
+											id: p.idProduct,
+											id_variant: p.idVariant,
+											id_order: '4ebf14fd-7cca-47b4-a870-e7153389a5f7'
+										};
+									})
+								});
 								await delay(3000);
 								loading = false;
 								const jsConfetti = new JSConfetti();

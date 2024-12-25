@@ -96,7 +96,11 @@
 										<User class="mr-2 size-4" />
 										<span>Mon profile</span>
 									</DropdownMenu.Item>
-									<DropdownMenu.Item>
+									<DropdownMenu.Item
+										onclick={async () => {
+											await goto('/order');
+										}}
+									>
 										<Package class="mr-2 size-4" />
 										<span>Commandes</span>
 									</DropdownMenu.Item>

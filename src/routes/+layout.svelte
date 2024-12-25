@@ -14,7 +14,22 @@
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { Toaster } from '$lib/components/ui/sonner';
 	import { cartStore } from '$lib/stores/cart';
+	import { browser } from '$app/environment';
 	let { data, children } = $props();
+	let search = $state('');
+	let category = $state('Toutes les catégories');
+	let urlSearch = $derived.by(() => {
+		if (browser) {
+			const url = new URL(window.location.origin);
+			url.pathname = '/search';
+			url.searchParams.append('keyword', search);
+			if (category !== 'Toutes les catégories') {
+				url.searchParams.append('category', category);
+			}
+			return url.toString();
+		}
+		return '';
+	});
 </script>
 
 <Toaster />
@@ -35,6 +50,7 @@
 			<Separator orientation="vertical" class="mr-2 h-4" />
 			<div class="flex w-full items-center justify-center gap-4">
 				<Combobox
+					bind:value={category}
 					options={[
 						{ label: 'Toutes les catégories', value: 'Toutes les catégories' },
 						...data.categories.data.map((c) => {
@@ -46,15 +62,21 @@
 					]}
 					placeholder="Toutes les catégories"
 				></Combobox>
-				<Input type="text" placeholder="Rechercher un produit" class="max-w-sm" />
-				<Button size="sm" variant="outline"><Search></Search></Button>
+				<Input
+					autocomplete="new-password"
+					type="text"
+					placeholder="Rechercher un produit"
+					class="max-w-sm"
+					bind:value={search}
+				/>
+				<Button size="sm" variant="outline" href={urlSearch}><Search></Search></Button>
 			</div>
 			<div class="ml-auto flex items-center justify-center gap-3">
 				{#if !$loginInformationStore.isLogged}
 					<Button href="/login">Se connecter</Button>
 				{/if}
 				{#if $loginInformationStore.isLogged && $loginInformationStore.data.role === UserRole.Admin}
-					<Badge variant="outline">Admin</Badge>
+					<Badge variant="outline" href="/admin">Admin</Badge>
 				{/if}
 				<Button variant="secondary" href="/cart"
 					><ShoppingCart></ShoppingCart> <Badge>{$cartStore.length}</Badge></Button

@@ -161,14 +161,19 @@ class MockServiceProduct implements IService<Product, Product> {
 	}
 	getPaginatedFilter(
 		paginatedQuery: PaginatedQuery,
-		categoryId: number = 0,
+		categoryId: number | undefined = undefined,
 		searchString: string = ''
 	) {
+		let dataToReturn = [...data];
+		if (categoryId !== undefined) {
+			dataToReturn = dataToReturn.filter((p) => p.categories.some((c) => c.id === categoryId));
+		}
+		if (searchString !== '') {
+			dataToReturn = dataToReturn.filter((p) => p.name.includes(searchString));
+		}
 		return {
 			currentPage: 1,
-			data: data.filter(
-				(p) => p.categories.some((c) => c.id === categoryId) && p.name.includes(searchString)
-			),
+			data: dataToReturn,
 			numberOfPages: 1
 		};
 	}

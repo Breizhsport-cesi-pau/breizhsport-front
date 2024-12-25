@@ -7,11 +7,10 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { cn } from '$lib/utils.js';
 	type ComboboxOption = { value: string; label: string };
-	type Props = { options: ComboboxOption[]; placeholder: string };
-	let { options, placeholder }: Props = $props();
+	type Props = { options: ComboboxOption[]; placeholder: string; value: string };
+	let { options, placeholder, value = $bindable('') }: Props = $props();
 
 	let open = $state(false);
-	let value = $state('');
 	let triggerRef = $state<HTMLButtonElement>(null!);
 
 	const selectedValue = $derived(options.find((f) => f.value === value)?.label);
