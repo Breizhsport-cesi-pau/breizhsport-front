@@ -159,7 +159,7 @@
 			<Dialog.Description>Que voulez vous faire ?</Dialog.Description>
 		</Dialog.Header>
 		<div class="flex flex-row justify-between">
-			<Button href="/">Retourner au menu principale</Button>
+			<Button href="/">Retourner au menu principal</Button>
 			<Button variant="outline" href="#">Voir mes commandes en cours</Button>
 		</div>
 	</Dialog.Content>
