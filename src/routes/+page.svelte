@@ -3,6 +3,7 @@
 	import ProductCard from '$lib/components/custom/product-card.svelte';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import * as Carousel from '$lib/components/ui/carousel/index.js';
+	import { displayPrice } from '$lib/utils/price.js';
 	const { data } = $props();
 </script>
 
@@ -50,7 +51,7 @@
 				description={data.runningProduct.description}
 				image={data.runningProduct.pictures[0]}
 				name={data.runningProduct.name}
-				price={`A partir de ${data.runningProduct.price}€`}
+				price={`A partir de ${displayPrice(data.footProduct.variants.sort((a, b) => a.price - b.price)[0].price)}`}
 				url={`/product/${data.runningProduct.id}`}
 				categories={data.runningProduct.categories.map((c) => c.name)}
 			></ProductCard>
@@ -61,7 +62,7 @@
 				description={data.tennisProduct.description}
 				image={data.tennisProduct.pictures[0]}
 				name={data.tennisProduct.name}
-				price={`A partir de ${data.tennisProduct.price}€`}
+				price={`A partir de ${displayPrice(data.footProduct.variants.sort((a, b) => a.price - b.price)[0].price)}`}
 				url={`/product/${data.tennisProduct.id}`}
 				categories={data.tennisProduct.categories.map((c) => c.name)}
 			></ProductCard>
@@ -72,7 +73,7 @@
 				description={data.footProduct.description}
 				image={data.footProduct.pictures[0]}
 				name={data.footProduct.name}
-				price={`A partir de ${data.footProduct.price}€`}
+				price={`A partir de ${displayPrice(data.footProduct.variants.sort((a, b) => a.price - b.price)[0].price)}`}
 				url={`/product/${data.footProduct.id}`}
 				categories={data.footProduct.categories.map((c) => c.name)}
 			></ProductCard>

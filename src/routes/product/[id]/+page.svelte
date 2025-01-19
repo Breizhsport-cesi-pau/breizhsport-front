@@ -9,6 +9,7 @@
 	import NumberAdder from '$lib/components/custom/NumberAdder.svelte';
 	import { cartStore } from '$lib/stores/cart';
 	import { goto } from '$app/navigation';
+	import { displayPrice } from '$lib/utils/price';
 	let { data }: { data: PageData } = $props();
 	const { product } = data;
 	let quantity = $state(1);
@@ -86,9 +87,15 @@
 		<div
 			class="flex flex-col gap-4 self-center rounded-xl border border-solid border-primary p-4 dark:border-white"
 		>
-			<NumberAdder bind:number={quantity}></NumberAdder>
+			<NumberAdder
+				bind:number={quantity}
+				min={1}
+				max={product.variants.find((v) => v.size === size && v.color === color)?.stock || 10}
+			></NumberAdder>
 			<div class="flex flex-row gap-4">
-				<p class="text-3xl">{product.price}€</p>
+				<p class="text-3xl">
+					{displayPrice(product.variants.sort((a, b) => a.price - b.price)[0].price)}
+				</p>
 				<Button
 					class="self-center"
 					onclick={() => {

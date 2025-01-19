@@ -6,6 +6,7 @@
 	import * as Pagination from '$lib/components/ui/pagination/index.js';
 	import ChevronLeft from 'lucide-svelte/icons/chevron-left';
 	import ChevronRight from 'lucide-svelte/icons/chevron-right';
+	import { displayPrice } from '$lib/utils/price';
 	let { data }: { data: PageData } = $props();
 </script>
 
@@ -26,7 +27,7 @@
 						description={product.description}
 						image={product.pictures[0]}
 						name={product.name}
-						price={`A partir de ${product.price}€`}
+						price={`A partir de ${displayPrice(product.variants.sort((a, b) => a.price - b.price)[0].price)}`}
 						url={`/product/${product.id}`}
 						categories={product.categories.map((c) => c.name)}
 					></ProductCard>

@@ -53,7 +53,7 @@
 									<Badge>{variant?.size}</Badge>
 								</div>
 								<div class="max-w-40">
-									<NumberAdder bind:number={$cartStore[i].quantity}></NumberAdder>
+									<NumberAdder bind:number={$cartStore[i].quantity} min={1}></NumberAdder>
 								</div>
 							</div>
 							<div class="h-18 flex flex-col justify-between">

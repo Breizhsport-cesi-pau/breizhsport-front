@@ -4,7 +4,6 @@ import type { Variant } from '$lib/models/variant';
 import type { IService, PaginatedQuery } from './service';
 type MainProduct = Product & {
 	categories: Category[];
-	price: number;
 	pictures: string[];
 	variants: Variant[];
 };
@@ -88,9 +87,6 @@ const data: MainProduct[] = [
 				name: 'Chaussure'
 			}
 		],
-		price: variants
-			.filter((v) => v.id_product === '00a1dv45-dx19-2301-2471-223932594567')
-			.sort((a, b) => a.price - b.price)[0].price,
 		pictures: [
 			'https://blog.therunningcollective.fr/wp-content/uploads/2023/12/Peg-41-1024x586.jpeg'
 		],
@@ -110,9 +106,6 @@ const data: MainProduct[] = [
 				name: 'Raquette'
 			}
 		],
-		price: variants
-			.filter((v) => v.id_product === '00a1dv45-dx19-2301-2471-223932594569')
-			.sort((a, b) => a.price - b.price)[0].price,
 		pictures: ['https://cdn.drouot.com/d/image/lot?size=phare&path=140/13558/139.jpg'],
 		variants: variants.filter((v) => v.id_product === '00a1dv45-dx19-2301-2471-223932594569')
 	},
@@ -130,16 +123,13 @@ const data: MainProduct[] = [
 				name: 'Ballon'
 			}
 		],
-		price: variants
-			.filter((v) => v.id_product === '00a1dv45-dx19-2301-2471-223932594564')
-			.sort((a, b) => a.price - b.price)[0].price,
 		pictures: [
 			'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfvFtoucpGFanezM2l-1l7bX_US6J1Z84cZA&s'
 		],
 		variants: variants.filter((v) => v.id_product === '00a1dv45-dx19-2301-2471-223932594564')
 	}
 ];
-class MockServiceProduct implements IService<Product, Product> {
+class MockServiceProduct {
 	getPaginated(paginatedQuery: PaginatedQuery) {
 		return {
 			currentPage: 1,
@@ -156,7 +146,12 @@ class MockServiceProduct implements IService<Product, Product> {
 	deleteOne(id: Product['id']) {
 		return { ...data[0] };
 	}
-	createOne(item: Omit<Product, 'id'>) {
+	createOne(
+		item: Omit<Product, 'id' | 'pictures'> & {
+			pictures: FileList;
+			variants: Omit<Variant, 'id' | 'id_product'>[];
+		}
+	) {
 		return data[0];
 	}
 	getPaginatedFilter(
@@ -176,6 +171,9 @@ class MockServiceProduct implements IService<Product, Product> {
 			data: dataToReturn,
 			numberOfPages: 1
 		};
+	}
+	getLatest(pageSize: number): Promise<Product[]> {
+		throw Error();
 	}
 }
 
