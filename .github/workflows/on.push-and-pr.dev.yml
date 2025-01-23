@@ -27,6 +27,7 @@ jobs:
     with:
       node-version: ${{ matrix.node-version }}
   quality_tests:
+    needs: [unit_and_integration_tests, e2e_tests]
     uses: Kevin-Moreau65/breizhsport-front/.github/workflows/test.quality.yml@develop
     secrets:
       sonar_token: ${{ secrets.SONAR_TOKEN }}
