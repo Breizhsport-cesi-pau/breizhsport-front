@@ -30,7 +30,7 @@ jobs:
     needs: [unit_and_integration_tests, e2e_tests]
     uses: Kevin-Moreau65/breizhsport-front/.github/workflows/test.quality.yml@develop
     secrets:
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      SONAR_CLOUD_TOKEN: ${{ secrets.SONAR_TOKEN }}
   publish_to_docker_push_event:
     needs: [unit_and_integration_tests, e2e_tests, quality_tests]
     uses: Kevin-Moreau65/breizhsport-front/.github/workflows/publish.docker.yml@develop
