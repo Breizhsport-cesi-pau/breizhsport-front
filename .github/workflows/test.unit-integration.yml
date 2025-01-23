@@ -28,6 +28,14 @@ jobs:
       - name: Upload Coverage Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: vitest-coverage
+          name: vitest-tests-result
           path: tests-result/vitest
+          include-hidden-files: true
+          retention-days: 3
+      - name: Upload Coverage Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage/vitest
+          include-hidden-files: true
           retention-days: 3

@@ -9,7 +9,9 @@ export default defineConfig({
     include: ['tests/unit/**/*.{test,spec}.{js,ts}', 'tests/integration/**/*.{test,spec}.{js,ts}'],
     coverage: {
       include: ['src/**/*.{ts,svelte}'],
-      exclude: ['src/lib/components/ui**', 'src/**/index.ts']
+      exclude: ['src/lib/components/ui**', 'src/**/index.ts'],
+      reporter: 'lcov',
+      reportsDirectory: './coverage'
     },
     reporters: ['github-actions', 'html'],
     outputFile: { html: './tests-result/vitest/index.html' }
