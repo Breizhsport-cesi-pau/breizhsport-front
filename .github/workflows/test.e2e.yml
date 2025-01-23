@@ -46,3 +46,4 @@ jobs:
           name: playwright-tests-results
           path: tests-result/playwright
           retention-days: 3
+          include-hidden-files: true
