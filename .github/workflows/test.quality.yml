@@ -3,7 +3,7 @@ name: Quality tests
 on:
   workflow_call:
     secrets:
-      sonar_token:
+      SONAR_TOKEN:
         required: true
 jobs:
   sonarqube:
@@ -12,6 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v4
+        uses: SonarSource/sonarqube-scan-action@v3.1.0
         env:
-          SONAR_TOKEN: ${{ secrets.sonar_token }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
