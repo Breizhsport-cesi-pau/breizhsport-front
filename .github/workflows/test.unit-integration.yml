@@ -25,7 +25,7 @@ jobs:
         run: pnpm install
       - name: Run unit & integration tests & coverage
         run: pnpm run test:cov
-      - name: Upload Coverage Artifacts
+      - name: Upload Tests Results Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: vitest-tests-result
@@ -36,6 +36,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage
-          path: coverage/vitest
+          path: coverage
           include-hidden-files: true
           retention-days: 3
