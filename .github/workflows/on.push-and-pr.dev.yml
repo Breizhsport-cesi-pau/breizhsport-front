@@ -26,8 +26,12 @@ jobs:
     uses: Kevin-Moreau65/breizhsport-front/.github/workflows/test.e2e.yml@develop
     with:
       node-version: ${{ matrix.node-version }}
+  quality_tests:
+    uses: Kevin-Moreau65/breizhsport-front/.github/workflows/test.quality.yml@develop
+    with:
+      sonar_token: ${{ secrets.SONAR_TOKEN }}
   publish_to_docker_push_event:
-    needs: [unit_and_integration_tests, e2e_tests]
+    needs: [unit_and_integration_tests, e2e_tests, quality_tests]
     uses: Kevin-Moreau65/breizhsport-front/.github/workflows/publish.docker.yml@develop
     secrets:
       tags: ${{ secrets.DOCKER_USERNAME }}/breizhsport-front:develop
@@ -35,7 +39,7 @@ jobs:
       DOCKER_PAT: ${{ secrets.DOCKER_PAT }}
     if: github.event_name != 'pull_request'
   publish_to_docker_pr_event:
-    needs: [unit_and_integration_tests, e2e_tests]
+    needs: [unit_and_integration_tests, e2e_tests, quality_tests]
     uses: Kevin-Moreau65/breizhsport-front/.github/workflows/publish.docker.yml@develop
     secrets:
       tags: ${{ secrets.DOCKER_USERNAME }}/breizhsport-front:develop-pr-${{ github.event.number }}
