@@ -4,49 +4,49 @@
 name: CI/CD Dev
 
 on:
-  push:
-    branches:
-      - develop
-  pull_request:
-    branches:
-      - develop
+    push:
+        branches:
+            - develop
+    pull_request:
+        branches:
+            - develop
 
 jobs:
-  unit_and_integration_tests:
-    strategy:
-      matrix:
-        node-version: [22.x]
-    uses: Kevin-Moreau65/breizhsport-front/.github/workflows/test.unit-integration.yml@develop
-    with:
-      node-version: ${{ matrix.node-version }}
-  e2e_tests:
-    strategy:
-      matrix:
-        node-version: [22.x]
-    uses: Kevin-Moreau65/breizhsport-front/.github/workflows/test.e2e.yml@develop
-    with:
-      node-version: ${{ matrix.node-version }}
-  quality_tests:
-    needs: [unit_and_integration_tests, e2e_tests]
-    uses: Kevin-Moreau65/breizhsport-front/.github/workflows/test.quality.yml@develop
-    secrets:
-      SONAR_CLOUD_TOKEN: ${{ secrets.SONAR_TOKEN }}
-    with:
-      coverage_folder: ./coverage
-      coverage_artifact_name: coverage
-  publish_to_docker_push_event:
-    needs: [unit_and_integration_tests, e2e_tests, quality_tests]
-    uses: Kevin-Moreau65/breizhsport-front/.github/workflows/publish.docker.yml@develop
-    secrets:
-      tags: ${{ secrets.DOCKER_USERNAME }}/breizhsport-front:develop
-      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-      DOCKER_PAT: ${{ secrets.DOCKER_PAT }}
-    if: github.event_name != 'pull_request'
-  publish_to_docker_pr_event:
-    needs: [unit_and_integration_tests, e2e_tests, quality_tests]
-    uses: Kevin-Moreau65/breizhsport-front/.github/workflows/publish.docker.yml@develop
-    secrets:
-      tags: ${{ secrets.DOCKER_USERNAME }}/breizhsport-front:develop-pr-${{ github.event.number }}
-      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-      DOCKER_PAT: ${{ secrets.DOCKER_PAT }}
-    if: github.event_name == 'pull_request'
+    unit_and_integration_tests:
+        strategy:
+            matrix:
+                node-version: [22.x]
+        uses: Breizhsport-cesi-pau/breizhsport-front/.github/workflows/test.unit-integration.yml@develop
+        with:
+            node-version: ${{ matrix.node-version }}
+    e2e_tests:
+        strategy:
+            matrix:
+                node-version: [22.x]
+        uses: Breizhsport-cesi-pau/breizhsport-front/.github/workflows/test.e2e.yml@develop
+        with:
+            node-version: ${{ matrix.node-version }}
+    quality_tests:
+        needs: [unit_and_integration_tests, e2e_tests]
+        uses: Breizhsport-cesi-pau/breizhsport-front/.github/workflows/test.quality.yml@develop
+        secrets:
+            SONAR_CLOUD_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+            coverage_folder: ./coverage
+            coverage_artifact_name: coverage
+    publish_to_docker_push_event:
+        needs: [unit_and_integration_tests, e2e_tests, quality_tests]
+        uses: Breizhsport-cesi-pau/breizhsport-front/.github/workflows/publish.docker.yml@develop
+        secrets:
+            tags: ${{ secrets.DOCKER_USERNAME }}/breizhsport-front:develop
+            DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+            DOCKER_PAT: ${{ secrets.DOCKER_PAT }}
+        if: github.event_name != 'pull_request'
+    publish_to_docker_pr_event:
+        needs: [unit_and_integration_tests, e2e_tests, quality_tests]
+        uses: Breizhsport-cesi-pau/breizhsport-front/.github/workflows/publish.docker.yml@develop
+        secrets:
+            tags: ${{ secrets.DOCKER_USERNAME }}/breizhsport-front:develop-pr-${{ github.event.number }}
+            DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+            DOCKER_PAT: ${{ secrets.DOCKER_PAT }}
+        if: github.event_name == 'pull_request'
