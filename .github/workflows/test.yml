@@ -18,7 +18,7 @@ jobs:
             resource_group_name: ${{github.sha}}
     create_aks:
         needs: [create_resource_group]
-        uses: Breizhsport-cesi-pau/breizhsport-front/.github/workflows/azure.resource-group.create.yml@develop
+        uses: Breizhsport-cesi-pau/breizhsport-front/.github/workflows/azure.aks.create.yml@develop
         secrets:
             AZURE_CLIENT_ID: ${{secrets.AZURE_CLIENT_ID}}
             AZURE_TENANT_ID: ${{secrets.AZURE_TENANT_ID}}
