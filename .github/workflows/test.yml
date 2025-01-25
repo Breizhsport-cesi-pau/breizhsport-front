@@ -30,7 +30,9 @@ jobs:
     deploy_on_aks:
         needs: [create_aks]
         runs-on: ubuntu-latest
+        environment: prod
         steps:
+            - uses: actions/checkout@v4
             - name: Azure login
               uses: azure/login@v2
               with:
@@ -47,6 +49,11 @@ jobs:
                       helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
                       helm repo update
                       helm install nginx-ingress ingress-nginx/ingress-nginx --namespace nginx --create-namespace
+            - name: Deploy front app
+              uses: azure/cli@v2
+              with:
+                  inlineScript: |
+                      kubectl apply -f test.yaml -n nginx
             - name: Sleep for 30 seconds
               run: sleep 30s
               shell: bash
@@ -63,7 +70,7 @@ jobs:
               with:
                   target: 'http://${{steps.ipAddress.outputs.IPADDRESS}}'
     remove_resource_group:
-        needs: [deploy_on_aks]
+        needs: [create_resource_group, create_aks, deploy_on_aks]
         if: always()
         uses: Breizhsport-cesi-pau/breizhsport-front/.github/workflows/azure.resource-group.delete.yml@develop
         secrets:
@@ -73,7 +80,7 @@ jobs:
         with:
             resource_group_name: ${{github.sha}}
     remove_aks_resource_group:
-        needs: [deploy_on_aks]
+        needs: [create_resource_group, create_aks, deploy_on_aks]
         if: always()
         uses: Breizhsport-cesi-pau/breizhsport-front/.github/workflows/azure.resource-group.delete.yml@develop
         secrets:
