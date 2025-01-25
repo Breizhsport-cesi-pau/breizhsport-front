@@ -4,6 +4,9 @@ on:
     push:
         branches:
             - develop
+permissions:
+    id-token: write
+    contents: read
 jobs:
     create_resource_group:
         uses: Breizhsport-cesi-pau/breizhsport-front/.github/workflows/azure.resource-group.create.yml@develop
