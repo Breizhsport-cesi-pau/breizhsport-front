@@ -19,9 +19,10 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: login docker hub
+              id: login
               run: |
                   TOKEN=`curl -s -H "Content-Type: application/json" -X POST -H "Content-Type: application/json" -d '{"username":"${{secrets.DOCKER_USERNAME}}", "password":"${{secrets.DOCKER_USERNAME}}"}' "https://hub.docker.com/v2/users/login/" | jq -r .token`
-                  echo "TOKEN=${TOKEN}" >> $GITHUB_ENV
+                  echo "TOKEN=${TOKEN}" >> $GITHUB_OUTPUT
             - name: remove tag from docker hub
               run: |
-                  curl "https://hub.docker.com/v2/repositories/${{secrets.DOCKER_USERNAME}}/${{inputs.image}}/tags/${{inputs.tag}}/" -X DELETE -H "Authorization: JWT ${TOKEN}"
+                  curl "https://hub.docker.com/v2/repositories/${{secrets.DOCKER_USERNAME}}/${{inputs.image}}/tags/${{inputs.tag}}/" -X DELETE -H "Authorization: JWT ${{ steps.login.outputs.TOKEN }}"
