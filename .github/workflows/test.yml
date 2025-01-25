@@ -1,5 +1,16 @@
 name: Run Azure Login with OIDC
-on: [push]
+on:
+    workflow_call:
+        secrets:
+            DOCKER_USERNAME:
+                required: true
+                description: ''
+            DOCKER_PAT:
+                required: true
+                description: ''
+            tags:
+                required: true
+                description: ''
 
 permissions:
     id-token: write

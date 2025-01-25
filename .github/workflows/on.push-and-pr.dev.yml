@@ -44,7 +44,7 @@ jobs:
         if: github.event_name != 'pull_request'
     test:
         needs: [unit_and_integration_tests, e2e_tests, quality_tests, publish_to_docker_push_event]
-        uses: Breizhsport-cesi-pau/breizhsport-front/.github/workflows/docker-hub.rename-push@develop
+        uses: Breizhsport-cesi-pau/breizhsport-front/.github/workflows/docker-hub.rename-push.yml@develop
         secrets:
             DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
             DOCKER_PAT: ${{ secrets.DOCKER_PAT }}
