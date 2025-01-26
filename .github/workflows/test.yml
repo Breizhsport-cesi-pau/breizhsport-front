@@ -69,13 +69,10 @@ jobs:
                   kubectl apply -f test.yaml -n nginx
               shell: bash
             - name: Get public IP Adress
-              uses: azure/cli@v2
               id: ipAddress
-              with:
-                  azcliversion: latest
-                  inlineScript: |
-                      IP=$(az network public-ip list -g breizhsport-poc-AKS | jq -r '.[0].ipAddress')
-                      echo "IPADDRESS=$IP" >> $GITHUB_OUTPUT
+              run: |
+                  IP=$(kubectl get svc -n nginx nginx-ingress-ingress-nginx-controller -o json | jq -r '.status.loadBalancer.ingress[0].ip')
+                  echo "IPADDRESS=$IP" >> $GITHUB_OUTPUT
             - name: ZAP Scan
               uses: zaproxy/action-baseline@v0.14.0
               with:
