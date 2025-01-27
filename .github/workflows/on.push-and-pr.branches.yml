@@ -3,7 +3,6 @@ name: CI/CD Branches
 on:
     push:
         branches:
-            - '*'
             - '!release/**'
             - '*/*'
             - '**'
@@ -11,7 +10,6 @@ on:
             - '!develop'
     pull_request:
         branches:
-            - '*'
             - '!release/**'
             - '*/*'
             - '**'
