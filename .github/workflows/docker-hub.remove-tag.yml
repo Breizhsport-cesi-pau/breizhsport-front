@@ -1,0 +1,23 @@
+name: Remove tag on docker hub
+
+on:
+    workflow_call:
+        secrets:
+            DOCKER_PAT:
+                required: true
+            DOCKER_USERNAME:
+                required: true
+        inputs:
+            image:
+                type: string
+                required: true
+            tag:
+                type: string
+                required: true
+jobs:
+    login_and_delete:
+        runs-on: ubuntu-latest
+        steps:
+            - name: login docker hub and remove tag
+              run: |
+                  curl "https://hub.docker.com/v2/repositories/${{secrets.DOCKER_USERNAME}}/${{inputs.image}}/tags/${{inputs.tag}}/" -X DELETE -H "Authorization: JWT $(curl -s -H "Content-Type: application/json" -X POST -H "Content-Type: application/json" -d '{"username":"${{secrets.DOCKER_USERNAME}}", "password":"${{secrets.DOCKER_PAT}}"}' "https://hub.docker.com/v2/users/login/" | jq -r .token)"
