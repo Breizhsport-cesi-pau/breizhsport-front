@@ -1,0 +1,22 @@
+name: CD Publish
+
+on:
+    release:
+        types: [published]
+
+jobs:
+    get-tag:
+        runs-on: ubuntu-latest
+        outputs:
+            tag: ${{steps.get-tag-version.outputs.tag}}
+        steps:
+            - name: Set output
+              id: get-tag-version
+              run: echo "tag=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
+    publish_to_docker:
+        needs: [get-tag]
+        uses: Breizhsport-cesi-pau/breizhsport-front/.github/workflows/publish.docker.yml@develop
+        secrets:
+            tags: ${{ secrets.DOCKER_USERNAME }}/breizhsport-front:${{needs.get-tag.outputs.tag}}
+            DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+            DOCKER_PAT: ${{ secrets.DOCKER_PAT }}
