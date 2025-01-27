@@ -34,6 +34,7 @@ jobs:
             DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
             DOCKER_PAT: ${{ secrets.DOCKER_PAT }}
     pentest:
+        needs: [publish_to_docker]
         uses: Breizhsport-cesi-pau/breizhsport-front/.github/workflows/test.pentest.yml@develop
         secrets:
             AZURE_CLIENT_ID: ${{secrets.AZURE_CLIENT_ID}}
