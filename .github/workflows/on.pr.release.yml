@@ -4,6 +4,10 @@ on:
     pull_request:
         branches:
             - 'release/**'
+        types:
+            - opened
+            - edited
+            - synchronize
 
 jobs:
     unit_and_integration_tests:
@@ -26,6 +30,8 @@ jobs:
             AZURE_CLIENT_ID: ${{secrets.AZURE_CLIENT_ID}}
             AZURE_TENANT_ID: ${{secrets.AZURE_TENANT_ID}}
             AZURE_SUBSCRIPTION_ID: ${{secrets.AZURE_SUBSCRIPTION_ID}}
+        with:
+            tag:
     publish_to_docker:
         needs: [unit_and_integration_tests, e2e_tests]
         uses: Breizhsport-cesi-pau/breizhsport-front/.github/workflows/publish.docker.yml@develop

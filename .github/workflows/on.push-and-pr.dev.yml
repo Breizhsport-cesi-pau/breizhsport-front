@@ -10,7 +10,10 @@ on:
         types:
             - opened
             - edited
-
+            - synchronize
+permissions:
+    id-token: write
+    contents: read
 jobs:
     unit_and_integration_tests:
         strategy:
@@ -42,9 +45,12 @@ jobs:
             DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
             DOCKER_PAT: ${{ secrets.DOCKER_PAT }}
     pentest:
+        needs: [publish_to_docker]
         uses: Breizhsport-cesi-pau/breizhsport-front/.github/workflows/test.pentest.yml@develop
         secrets:
             AZURE_CLIENT_ID: ${{secrets.AZURE_CLIENT_ID}}
             AZURE_TENANT_ID: ${{secrets.AZURE_TENANT_ID}}
             AZURE_SUBSCRIPTION_ID: ${{secrets.AZURE_SUBSCRIPTION_ID}}
+        with:
+            tag: develop-pr-${{github.event.number}}
         if: github.event_name == 'pull_request'
