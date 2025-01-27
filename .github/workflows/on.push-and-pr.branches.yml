@@ -3,18 +3,18 @@ name: CI/CD Branches
 on:
     push:
         branches:
-            - '!release/**'
             - '*/*'
             - '**'
             - '!main'
             - '!develop'
+            - '!release/**'
     pull_request:
         branches:
-            - '!release/**'
             - '*/*'
             - '**'
             - '!main'
             - '!develop'
+            - '!release/**'
 
 jobs:
     unit_and_integration_tests:
