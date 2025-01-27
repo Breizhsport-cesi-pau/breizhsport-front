@@ -1,49 +1,49 @@
 name: e2e tests
 
 on:
-  workflow_call:
-    inputs:
-      node-version:
-        type: string
-        required: true
+    workflow_call:
+        inputs:
+            node-version:
+                type: string
+                required: true
 
 jobs:
-  build_and_test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-      - name: Use Node.js ${{ inputs.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ inputs.node-version }}
-          cache: 'pnpm'
-      - name: Install dependencies
-        run: pnpm install
-      - name: Get installed Playwright version
-        id: playwright-version
-        uses: actions-tools/yaml-outputs@v2.1
-        with:
-          file-path: ${{ github.workspace }}/pnpm-lock.yaml
-          export-env-variables: false
-      - name: Cache playwright binaries
-        uses: actions/cache@v3
-        id: playwright-cache
-        with:
-          path: |
-            ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ steps.playwright-version.outputs['importers__.__devDependencies__@playwright/test__version'] }}
-      - run: npx playwright install --with-deps
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
-      - name: Run e2e tests
-        run: pnpm run test:e2e
-      - name: Upload Test Results Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-tests-results
-          path: tests-result/playwright
-          retention-days: 3
-          include-hidden-files: true
+    build_and_test:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: 9
+            - name: Use Node.js ${{ inputs.node-version }}
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ inputs.node-version }}
+                  cache: 'pnpm'
+            - name: Install dependencies
+              run: pnpm install
+            - name: Get installed Playwright version
+              id: playwright-version
+              uses: actions-tools/yaml-outputs@v2.1
+              with:
+                  file-path: ${{ github.workspace }}/pnpm-lock.yaml
+                  export-env-variables: false
+            - name: Cache playwright binaries
+              uses: actions/cache@v3
+              id: playwright-cache
+              with:
+                  path: |
+                      ~/.cache/ms-playwright
+                  key: ${{ runner.os }}-playwright-${{ steps.playwright-version.outputs['importers__.__devDependencies__@playwright/test__version'] }}
+            - run: npx playwright install --with-deps
+              if: steps.playwright-cache.outputs.cache-hit != 'true'
+            - name: Run e2e tests
+              run: pnpm run test:e2e
+            - name: Upload Test Results Artifacts
+              uses: actions/upload-artifact@v4
+              with:
+                  name: playwright-tests-results
+                  path: tests-result/playwright
+                  retention-days: 3
+                  include-hidden-files: true
