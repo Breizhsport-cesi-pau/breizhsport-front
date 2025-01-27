@@ -1,12 +1,10 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
 name: CI/CD Branches
 
 on:
     push:
         branches:
             - '*'
+            - '!release/**'
             - '*/*'
             - '**'
             - '!main'
@@ -14,6 +12,7 @@ on:
     pull_request:
         branches:
             - '*'
+            - '!release/**'
             - '*/*'
             - '**'
             - '!main'
@@ -54,11 +53,3 @@ jobs:
             DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
             DOCKER_PAT: ${{ secrets.DOCKER_PAT }}
         if: github.event_name != 'pull_request'
-    publish_to_docker_pr_event:
-        needs: [extract_branch_name]
-        uses: Breizhsport-cesi-pau/breizhsport-front/.github/workflows/publish.docker.yml@develop
-        secrets:
-            tags: ${{ secrets.DOCKER_USERNAME }}/breizhsport-front:${{needs.extract_branch_name.outputs.branch}}-pr-${{ github.event.number }}
-            DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-            DOCKER_PAT: ${{ secrets.DOCKER_PAT }}
-        if: github.event_name == 'pull_request'
