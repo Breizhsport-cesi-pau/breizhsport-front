@@ -10,7 +10,9 @@ on:
         types:
             - opened
             - edited
-
+permissions:
+    id-token: write
+    contents: read
 jobs:
     unit_and_integration_tests:
         strategy:
