@@ -1,0 +1,31 @@
+name: Performance tests
+
+on:
+    workflow_call:
+        inputs:
+            url:
+                type: string
+                required: true
+jobs:
+    spike_and_load-tests:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: grafana/setup-k6-action@v1
+            - uses: grafana/run-k6-action@v1
+              with:
+                  flags: -e URL=${{inputs.url}} --out json=requests.spike.json --compatibility-mode=experimental_enhanced
+                  path: |
+                      ./tests/performance/spike.ts
+            - uses: grafana/run-k6-action@v1
+              with:
+                  flags: -e URL=${{inputs.url}} --out json=requests.load.json --compatibility-mode=experimental_enhanced
+                  path: |
+                      ./tests/performance/load.ts
+            - name: Upload requests results artifacts
+              uses: actions/upload-artifact@v4
+              with:
+                  name: playwright-tests-results
+                  path: ./requests.*.json
+                  retention-days: 3
+                  include-hidden-files: true

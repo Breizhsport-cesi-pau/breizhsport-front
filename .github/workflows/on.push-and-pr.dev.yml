@@ -44,7 +44,7 @@ jobs:
             tags: ${{ secrets.DOCKER_USERNAME }}/breizhsport-front:${{github.event_name == 'pull_request' && format('develop-pr-{0}', github.event.number) || 'develop'}}
             DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
             DOCKER_PAT: ${{ secrets.DOCKER_PAT }}
-    pentest:
+    performance_and_pentest:
         needs: [publish_to_docker]
         uses: Breizhsport-cesi-pau/breizhsport-front/.github/workflows/test.pentest.yml@develop
         secrets:
