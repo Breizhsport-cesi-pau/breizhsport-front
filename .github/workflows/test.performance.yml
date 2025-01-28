@@ -11,17 +11,18 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
+            - run: ls -al
             - uses: grafana/setup-k6-action@v1
             - uses: grafana/run-k6-action@v1
               with:
                   flags: -e URL=${{inputs.url}} --out json=requests.spike.json --compatibility-mode=experimental_enhanced
                   path: |
-                      ./tests/performance/spike.ts
+                      tests/performance/spike.ts
             - uses: grafana/run-k6-action@v1
               with:
                   flags: -e URL=${{inputs.url}} --out json=requests.load.json --compatibility-mode=experimental_enhanced
                   path: |
-                      ./tests/performance/load.ts
+                      tests/performance/load.ts
             - name: Upload requests results artifacts
               uses: actions/upload-artifact@v4
               with:
