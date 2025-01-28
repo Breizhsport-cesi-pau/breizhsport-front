@@ -23,6 +23,10 @@ export const options: Options = {
         {
             duration: '10s',
             target: 160
+        },
+        {
+            duration: '10s',
+            target: 320
         }
     ]
 };

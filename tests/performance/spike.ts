@@ -8,7 +8,7 @@ export const options: Options = {
         http_req_failed: ['rate<0.01'], // http errors should be less than 1%
         http_req_duration: ['p(95)<400'] // 95% of requests should be below 400ms
     },
-    batch: 300
+    batch: 1000
 };
 
 export default function () {
