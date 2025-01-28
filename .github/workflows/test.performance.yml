@@ -21,7 +21,7 @@ jobs:
             - name: Upload requests results artifacts
               uses: actions/upload-artifact@v4
               with:
-                  name: playwright-tests-results
+                  name: k6-requests-result
                   path: ./requests.*.json
                   retention-days: 3
                   include-hidden-files: true
