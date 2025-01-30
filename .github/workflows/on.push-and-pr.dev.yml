@@ -54,3 +54,13 @@ jobs:
         with:
             tag: develop-pr-${{github.event.number}}
         if: github.event_name == 'pull_request'
+    modify_prod_version:
+        needs: [publish_to_docker]
+        uses: Breizhsport-cesi-pau/breizhsport-infra/.github/workflows/modify.image-version.yml@main
+        secrets:
+            DOCKER_IMAGE: ${{ secrets.DOCKER_USERNAME }}/breizhsport-front
+            GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+            commit_message: Modified front-end version (develop)
+            new_image_version: develop
+            yaml_path: architecture/front-end/deployment.yml
