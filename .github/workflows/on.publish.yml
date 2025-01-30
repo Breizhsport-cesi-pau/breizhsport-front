@@ -20,3 +20,13 @@ jobs:
             tags: ${{ secrets.DOCKER_USERNAME }}/breizhsport-front:${{needs.get-tag.outputs.tag}}
             DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
             DOCKER_PAT: ${{ secrets.DOCKER_PAT }}
+    modify_prod_version:
+        needs: [get-tag, publish_to_docker]
+        uses: Breizhsport-cesi-pau/breizhsport-infra/.github/workflows/modify.image-version.yml@main
+        secrets:
+            DOCKER_IMAGE: ${{ secrets.DOCKER_USERNAME }}/breizhsport-front
+            TOKEN_GITHUB: ${{secrets.BREIZHSPORT_PAT}}
+        with:
+            commit_message: Modified front-end version (${{needs.get-tag.outputs.tag}})
+            new_image_version: ${{needs.get-tag.outputs.tag}}
+            yaml_path: architecture/front-end/deployment.yml

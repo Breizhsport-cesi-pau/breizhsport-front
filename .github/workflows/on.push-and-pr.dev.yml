@@ -13,7 +13,7 @@ on:
             - synchronize
 permissions:
     id-token: write
-    contents: read
+    contents: write
 jobs:
     unit_and_integration_tests:
         strategy:
