@@ -59,7 +59,7 @@ jobs:
         uses: Breizhsport-cesi-pau/breizhsport-infra/.github/workflows/modify.image-version.yml@main
         secrets:
             DOCKER_IMAGE: ${{ secrets.DOCKER_USERNAME }}/breizhsport-front
-            TOKEN_GITHUB: ${{secrets.GITHUB_TOKEN}}
+            TOKEN_GITHUB: ${{secrets.BREIZHSPORT_PAT}}
         with:
             commit_message: Modified front-end version (develop)
             new_image_version: develop
