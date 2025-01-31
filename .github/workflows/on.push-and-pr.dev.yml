@@ -27,6 +27,8 @@ jobs:
             matrix:
                 node-version: [22.x]
         uses: Breizhsport-cesi-pau/breizhsport-infra/.github/workflows/test.e2e.yml@main
+        secrets:
+            TOKEN_GITHUB: ${{secrets.GITHUB_TOKEN}}
         with:
             node-version: ${{ matrix.node-version }}
     quality_tests:
