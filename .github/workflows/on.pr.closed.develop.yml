@@ -9,7 +9,7 @@ on:
 
 jobs:
     remove_docker_image_pr:
-        uses: Breizhsport-cesi-pau/breizhsport-front/.github/workflows/docker-hub.remove-tag.yml@develop
+        uses: Breizhsport-cesi-pau/breizhsport-infra/.github/workflows/docker-hub.remove-tag.yml@main
         secrets:
             DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
             DOCKER_PAT: ${{ secrets.DOCKER_PAT }}
