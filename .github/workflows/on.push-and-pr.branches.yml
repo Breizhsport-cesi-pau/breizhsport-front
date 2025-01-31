@@ -21,14 +21,14 @@ jobs:
         strategy:
             matrix:
                 node-version: [22.x]
-        uses: Breizhsport-cesi-pau/breizhsport-front/.github/workflows/test.unit-integration.yml@develop
+        uses: Breizhsport-cesi-pau/breizhsport-infra/.github/workflows/test.unit-integration.yml@main
         with:
             node-version: ${{ matrix.node-version }}
     e2e_tests:
         strategy:
             matrix:
                 node-version: [22.x]
-        uses: Breizhsport-cesi-pau/breizhsport-front/.github/workflows/test.e2e.yml@develop
+        uses: Breizhsport-cesi-pau/breizhsport-infra/.github/workflows/test.e2e.yml@main
         with:
             node-version: ${{ matrix.node-version }}
     extract_branch_name:
@@ -45,7 +45,7 @@ jobs:
                   echo "branch=${BRANCH_NAME}" >> $GITHUB_OUTPUT
     publish_to_docker_push_event:
         needs: [extract_branch_name]
-        uses: Breizhsport-cesi-pau/breizhsport-front/.github/workflows/publish.docker.yml@develop
+        uses: Breizhsport-cesi-pau/breizhsport-infra/.github/workflows/publish.docker.yml@main
         secrets:
             tags: ${{ secrets.DOCKER_USERNAME }}/breizhsport-front:${{needs.extract_branch_name.outputs.branch}}
             DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}

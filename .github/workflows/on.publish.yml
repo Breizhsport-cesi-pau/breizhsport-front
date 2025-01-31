@@ -15,7 +15,7 @@ jobs:
               run: echo "tag=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
     publish_to_docker:
         needs: [get-tag]
-        uses: Breizhsport-cesi-pau/breizhsport-front/.github/workflows/publish.docker.yml@develop
+        uses: Breizhsport-cesi-pau/breizhsport-infra/.github/workflows/publish.docker.yml@main
         secrets:
             tags: ${{ secrets.DOCKER_USERNAME }}/breizhsport-front:${{needs.get-tag.outputs.tag}}
             DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
