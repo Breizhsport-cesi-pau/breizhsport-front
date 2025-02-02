@@ -31,6 +31,8 @@ jobs:
         uses: Breizhsport-cesi-pau/breizhsport-infra/.github/workflows/test.e2e.yml@main
         with:
             node-version: ${{ matrix.node-version }}
+        secrets:
+            TOKEN_GITHUB: ${{secrets.GITHUB_TOKEN}}
     extract_branch_name:
         needs: [unit_and_integration_tests, e2e_tests]
         runs-on: ubuntu-latest

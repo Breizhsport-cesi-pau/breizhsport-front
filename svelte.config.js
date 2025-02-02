@@ -18,7 +18,8 @@ const config = {
 				"default-src": [ "self" ],
 				"img-src": [ "http:" ],
 				"frame-ancestors": [ "self" ],
-				'form-action': [ "self" ]
+				'form-action': [ "self" ],
+				"connect-src": [ "http:" ]
 			}
 		},
 	},
