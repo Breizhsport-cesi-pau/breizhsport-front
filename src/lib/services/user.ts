@@ -1,4 +1,4 @@
-import { PUBLIC_MS_USER } from '$env/static/public';
+import { env } from '$env/dynamic/public';
 import type { User } from '$lib/models/user';
 import UserSchema from '$lib/models/user';
 import { cartStore } from '$lib/stores/cart';
@@ -82,8 +82,8 @@ class MockServiceUser implements IServiceUser {
 }
 class ServiceUser implements IServiceUser {
     async login(email: string, password: string): Promise<LoginInformation> {
-        console.log(`${PUBLIC_MS_USER}/login`);
-        const response = await fetch(`${PUBLIC_MS_USER}/login`, {
+        console.log(`${env.PUBLIC_MS_USER}/login`);
+        const response = await fetch(`${env.PUBLIC_MS_USER}/login`, {
             method: 'POST',
             body: JSON.stringify({ email, password }),
             headers: {
