@@ -1,6 +1,5 @@
 import { env } from '$env/dynamic/public';
 import type { User } from '$lib/models/user';
-import UserSchema from '$lib/models/user';
 import { cartStore } from '$lib/stores/cart';
 import {
     loginInformationStore,
