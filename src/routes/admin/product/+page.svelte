@@ -44,7 +44,6 @@
         }[],
         categories: []
     });
-    $effect(() => console.dir($inspect(form), { depth: null }));
     const resetVariants = () => (form.variants = []);
     const addProduct = async () => {
         const refinedForm = {
