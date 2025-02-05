@@ -16,9 +16,6 @@ const UserSchema = z.object({
 		.regex(/^(?=.*?[0-9]).{1,}$/, {
 			message: 'Le mot de passe doit contenir au minimum un chiffre.'
 		})
-		.regex(/^(?=.*?[#?!@$%^&*-]).{1,}$/, {
-			message: 'Le mot de passe doit contenir au minimum un caractère spécial.'
-		}),
 	email: z
 		.string({ required_error: 'Ce champs est requis.' })
 		.email({ message: 'Veuillez entrer une adresse mail valide.' }),

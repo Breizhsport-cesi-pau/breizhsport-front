@@ -81,7 +81,6 @@ class MockServiceUser implements IServiceUser {
 }
 class ServiceUser implements IServiceUser {
     async login(email: string, password: string): Promise<LoginInformation> {
-        console.log(`${env.PUBLIC_MS_USER}/login`);
         const response = await fetch(`${env.PUBLIC_MS_USER}/login`, {
             method: 'POST',
             body: JSON.stringify({ email, password }),
