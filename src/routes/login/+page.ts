@@ -4,7 +4,7 @@ import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
 export const load: PageLoad = async () => {
-	return {
-		form: await superValidate(zod(loginSchema))
-	};
+    return {
+        form: await superValidate(zod(loginSchema))
+    };
 };
