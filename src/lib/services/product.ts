@@ -64,13 +64,12 @@ class MockServiceProduct implements IServiceProduct {
 class ServiceProduct implements IServiceProduct {
     async createOne(item: CreateProduct): Promise<Product> {
         const flat = flatObjectForFormData(item);
+        console.log(flat);
         const formData = flatToFormData(flat);
+        console.dir(formData, { depth: null });
         const response = await fetch(`${env.PUBLIC_MS_PRODUCT}/products`, {
             method: 'POST',
-            body: formData,
-            headers: {
-                'content-type': 'multipart/form-data'
-            }
+            body: formData
         });
         const body = await response.json();
         return body;

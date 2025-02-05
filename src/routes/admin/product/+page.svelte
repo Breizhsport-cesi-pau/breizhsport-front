@@ -13,6 +13,7 @@
     import { fade } from 'svelte/transition';
     import { CreateProductSchema } from '$lib/models/product';
     import productService from '$lib/services/product';
+    import InputFile from '$lib/components/custom/inputFile.svelte';
     let { data }: { data: PageData } = $props();
     const addVariant = () => {
         form.variants.push({
@@ -39,13 +40,21 @@
             size: string;
             price: number;
             stock: number;
-            pictures: undefined | File[];
+            pictures: FileList | undefined;
         }[],
         categories: []
     });
+    $effect(() => console.dir($inspect(form), { depth: null }));
     const resetVariants = () => (form.variants = []);
     const addProduct = async () => {
-        const parsedForm = await CreateProductSchema.parseAsync(form);
+        const refinedForm = {
+            ...form,
+            categories: form.categories.map((c) => parseInt(c)),
+            variants: form.variants.map((v) => {
+                return { ...v, pictures: Array.from(v.pictures || []) };
+            })
+        };
+        const parsedForm = await CreateProductSchema.parseAsync(refinedForm);
         await productService.createOne(parsedForm);
         invalidateAll();
     };
@@ -69,11 +78,11 @@
             <div class="grid gap-4 py-4">
                 <div class="grid grid-cols-4 items-center gap-4">
                     <Label for="name">Nom du produit</Label>
-                    <Input id="name" class="col-span-3" />
+                    <Input id="name" class="col-span-3" bind:value={form.name} />
                 </div>
                 <div class="grid grid-cols-4 items-center gap-4">
                     <Label for="description">Description</Label>
-                    <Input id="description" class="col-span-3" />
+                    <Input id="description" class="col-span-3" bind:value={form.description} />
                 </div>
                 <div class="grid grid-cols-4 items-center gap-4">
                     <Label for="categories">Catégories</Label>
@@ -81,7 +90,7 @@
                         bind:value={form.categories}
                         placeholder="Selectionner une catégorie"
                         options={[
-                            ...data.categories.data.map((c) => {
+                            ...data.categories.map((c) => {
                                 return {
                                     label: c.name,
                                     value: c.id.toString()
@@ -128,13 +137,8 @@
                         </div>
                         <div class="grid grid-cols-4 items-center gap-4">
                             <Label for="pictures">Images</Label>
-                            <Input
-                                id="pictures"
-                                class="col-span-3"
-                                type="file"
-                                multiple
-                                bind:value={variant.pictures}
-                            />
+                            <InputFile class="col-span-3" bind:files={variant.pictures} />
+                            <!-- TODO: Faire un file input -->
                         </div>
                         <Button variant="destructive" onclick={() => deleteVariant(variant.idForm)}
                             >Supprimer le variant</Button

@@ -18,7 +18,7 @@ export const CreateProductSchema = ProductSchema.extend({
                 .array()
         })
         .array(),
-    categories: CategorySchema.omit({ name: true })
+    categories: CategorySchema.shape.id.array()
 }).omit({ id: true });
 export type Product = z.infer<typeof ProductSchema>;
 export type CreateProduct = z.infer<typeof CreateProductSchema>;

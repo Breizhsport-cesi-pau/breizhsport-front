@@ -140,7 +140,6 @@
                                         return {
                                             price,
                                             quantity: p.quantity,
-                                            id: p.idProduct,
                                             id_variant: p.idVariant,
                                             id_order: '4ebf14fd-7cca-47b4-a870-e7153389a5f7'
                                         };
