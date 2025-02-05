@@ -14,6 +14,8 @@
     import { CreateProductSchema } from '$lib/models/product';
     import productService from '$lib/services/product';
     import InputFile from '$lib/components/custom/inputFile.svelte';
+    import { toast } from 'svelte-sonner';
+    import { loginInformationStore } from '$lib/stores/login-informations.store';
     let { data }: { data: PageData } = $props();
     const addVariant = () => {
         form.variants.push({
@@ -46,16 +48,19 @@
     });
     const resetVariants = () => (form.variants = []);
     const addProduct = async () => {
-        const refinedForm = {
-            ...form,
-            categories: form.categories.map((c) => parseInt(c)),
-            variants: form.variants.map((v) => {
-                return { ...v, pictures: Array.from(v.pictures || []) };
-            })
-        };
-        const parsedForm = await CreateProductSchema.parseAsync(refinedForm);
-        await productService.createOne(parsedForm);
-        invalidateAll();
+        if ($loginInformationStore.isLogged) {
+            const refinedForm = {
+                ...form,
+                categories: form.categories.map((c) => parseInt(c)),
+                variants: form.variants.map((v) => {
+                    return { ...v, pictures: Array.from(v.pictures || []) };
+                })
+            };
+            const parsedForm = await CreateProductSchema.parseAsync(refinedForm);
+            await productService.createOne(parsedForm, $loginInformationStore.data.token);
+            toast.success('Produit créé avec succès !');
+            await invalidateAll();
+        }
     };
 </script>
 

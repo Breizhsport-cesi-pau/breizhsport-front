@@ -15,7 +15,7 @@ interface IServiceProduct {
     modifyOne(id: Product['id'], data: Partial<CreateProduct>): MaybeAsync<Product>;
     deleteOne(id: Product['id']): MaybeAsync<void>;
     getLatest(): MaybeAsync<{ data: [Product, Product, Product] }>;
-    createOne(item: CreateProduct): MaybeAsync<Product>;
+    createOne(item: CreateProduct, token: string): MaybeAsync<Product>;
 }
 class MockServiceProduct implements IServiceProduct {
     getLatest(): MaybeAsync<{ data: [Product, Product, Product] }> {
@@ -62,14 +62,13 @@ class MockServiceProduct implements IServiceProduct {
     }
 }
 class ServiceProduct implements IServiceProduct {
-    async createOne(item: CreateProduct): Promise<Product> {
+    async createOne(item: CreateProduct, token: string): Promise<Product> {
         const flat = flatObjectForFormData(item);
-        console.log(flat);
         const formData = flatToFormData(flat);
-        console.dir(formData, { depth: null });
         const response = await fetch(`${env.PUBLIC_MS_PRODUCT}/products`, {
             method: 'POST',
-            body: formData
+            body: formData,
+            headers: { authorization: `Bearer ${token}` }
         });
         const body = await response.json();
         return body;
